@@ -1,16 +1,12 @@
 import { version } from '../../package.json';
 import { Router } from 'express';
-import facets from './facets';
+import rankRoutes from './rank/index.js';
 
 export default ({ config, db }) => {
 	let api = Router();
 
 	// modified root API
-	api.get('/', (req, res) => {
-		res.json({
-			success: false,
-		});
-	});
-
+	api.route('/rank').get(rankRoutes.getRank);
+	api.route('/ranks').get(rankRoutes.getRanks);
 	return api;
 }
