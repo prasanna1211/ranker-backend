@@ -1,7 +1,13 @@
 export default (db) => (req, res) => {
-  db.query('SELECT * FROM ranks', (error, result) => {
+  const {
+    query: {
+      startDate,
+      endDate,
+    },
+  } = req;
+  const query = `SELECT rank FROM ranks where logDate between '${startDate}' and '${endDate}'`;
+  db.query(query, (error, result) => {
     if (error) throw error;
-    console.log(res);
     res.json(result);
   });
 }
