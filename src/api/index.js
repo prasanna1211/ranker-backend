@@ -5,8 +5,8 @@ import rankRoutes from './rank/index.js';
 export default ({ config, db }) => {
 	let api = Router();
 
-	// modified root API
-	api.route('/rank').get(rankRoutes.getRank);
-	api.route('/ranks').get(rankRoutes.getRanks);
+	// rank related routes
+	api.route('/rank').get(rankRoutes.getRank(db));
+
 	return api;
 }

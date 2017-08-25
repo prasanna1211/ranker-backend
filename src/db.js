@@ -7,6 +7,7 @@ export default callback => {
 		host: config.dbHost,
 		user: config.dbUsername,
 		password: config.dbPassword,
+		database: config.dbName,
 	});
 
 	con.connect((err) => {

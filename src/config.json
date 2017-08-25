@@ -4,5 +4,6 @@
 	"corsHeaders": ["Link"],
 	"dbHost": "localhost",
 	"dbUsername": "prasanna",
-	"dbPassword": "hellomid5"
+	"dbPassword": "hellomid5",
+  "dbName": "ranker"
 }
