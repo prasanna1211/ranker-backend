@@ -3,9 +3,15 @@ export default (db) => (req, res) => {
     query: {
       startDate,
       endDate,
+      company,
     },
   } = req;
-  const query = `SELECT rank FROM ranks where logDate between '${startDate}' and '${endDate}'`;
+
+  const query = `SELECT r.logDate, r.rank
+  FROM ranks r, companies c
+  WHERE logDate between '${startDate}' and '${endDate}'
+  AND c.name = '${company}'
+  `;
   db.query(query, (error, result) => {
     if (error) throw error;
     res.json(result);
