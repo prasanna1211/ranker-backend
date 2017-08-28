@@ -1,5 +1,9 @@
 {
 	"port": 8080,
 	"bodyLimit": "100kb",
-	"corsHeaders": ["Link"]
+	"corsHeaders": ["Link"],
+	"dbHost": "localhost",
+	"dbUsername": "prasanna",
+	"dbPassword": "hellomid5",
+  "dbName": "ranker"
 }
