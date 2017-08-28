@@ -13,6 +13,7 @@ export default (db) => (req, res) => {
   WHERE logDate between '${startDate}' and '${endDate}'
   AND c.name = '${company}'
   AND k.keyword = '${keyword}'
+  AND k.id = r.keywordId
   ORDER BY r.logDate DESC
   `;
 
