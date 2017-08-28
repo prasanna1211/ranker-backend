@@ -8,7 +8,7 @@ export default (db) => (req, res) => {
     },
   } = req;
 
-  const query = `SELECT r.logDate, r.rank
+  const query = `SELECT r.id, r.logDate, r.rank
   FROM ranks r, companies c, keywords k
   WHERE logDate between '${startDate}' and '${endDate}'
   AND c.name = '${company}'
