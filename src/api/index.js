@@ -3,6 +3,7 @@ import { Router } from 'express';
 import rankRoutes from './rank/index.js';
 import companyRoutes from './companies/index.js';
 import keywordRoutes from './keywords/index.js';
+import syncRoutes from './sync/index.js';
 
 export default ({ config, db }) => {
 	let api = Router();
@@ -15,6 +16,9 @@ export default ({ config, db }) => {
 
 	// keywords route
 	api.route('/keywords').get(keywordRoutes.getAllKeywords(db));
+
+	// scrap and sync to route
+	api.route('/sync').get(syncRoutes.scrapAndWriteToDb(db));
 
 	return api;
 }
