@@ -32,9 +32,11 @@
     "compression": "^1.5.2",
     "cors": "^2.7.1",
     "express": "^4.13.3",
+    "get-urls": "^7.0.0",
     "lodash": "^4.17.4",
     "morgan": "^1.8.0",
     "mysql": "^2.14.1",
+    "puppeteer": "^0.10.1",
     "resource-router-middleware": "^0.6.0"
   },
   "devDependencies": {
