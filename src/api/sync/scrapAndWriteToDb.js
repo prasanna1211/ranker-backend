@@ -33,14 +33,35 @@ export default (db) => (req, res) => {
         return Promise
         .delay(appConstants.delayBetweenKeywords)
         .then(() => {
-          return scrap.scrapeGoogleResult(word.keyword, 'https://www.google.com', 5)
+          return scrap.scrapeGoogleResult(word.keyword, 'https://www.google.co.in', 5)
           .then((scrap) => {
             if (scrap.success) {
-              const rankMapping = companyUrl.map(url => {
+              let rankMapping = companyUrl.map(url => {
                 return {
                   url,
-                  rank: findIndex(scrap.result, resultUrl => url === resultUrl)
+                  rank: findIndex(scrap.result, resultUrl => url === resultUrl),
+                  keywordId: word.id,
                 }
+              });
+              const rankData = map(rankMapping, (rank, index) => {
+                return merge(rank, companies[index]);
+              });
+              console.log(' rank data ', rankData);
+              const currentDate = moment().startOf('day').format('YYYY-MM-DD');
+              const keywordQuery = 'KEYWORD QUERY';
+              forEach(rankData, ({ url, rank, name, id, keywordId }) => {
+                let dbQuery = `INSERT INTO ranks
+                  (rank, logDate, companyId, keywordId, searchEngineId)
+                  VALUES
+                  (
+                    ${rank !== -1 ? rank+1 : rank},
+                    (${currentDate})
+                    (${id})
+                    ${keywordId}
+                    1
+                  );
+                `;
+                console.log(dbQuery);
               });
             }
           })
