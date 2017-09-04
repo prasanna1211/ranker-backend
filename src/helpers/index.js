@@ -68,6 +68,6 @@ async function scrapeGoogleResult(keyword, domain, numberOfPages) {
   };
 }
 
-scrapeGoogleResult('React js development company', 'https://www.google.com', 5).then((result) => {
-  console.log(result);
-});
+module.exports = {
+  scrapeGoogleResult: scrapeGoogleResult,
+};
