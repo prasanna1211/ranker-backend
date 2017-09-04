@@ -35,6 +35,7 @@
     "express": "^4.13.3",
     "get-urls": "^7.0.0",
     "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "morgan": "^1.8.0",
     "mysql": "^2.14.1",
     "puppeteer": "^0.10.1",
