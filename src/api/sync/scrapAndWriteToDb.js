@@ -54,13 +54,11 @@ export default (db) => (req, res) => {
                 let dbQuery = `INSERT INTO ranks (rank, logDate, companyId, keywordId, searchEngineId)
                   VALUES (${rank !== -1 ? rank+1 : rank}, "${currentDate}", ${id}, ${keywordId}, 1);
                 `;
-                console.log(' db query ', dbQuery);
                 db.query(dbQuery, (error, result) => {
                   if (error) throw error;
                   console.log(' written to db ');
                 });
               });
-
             }
           })
         });
