@@ -1,9 +1,13 @@
 const scrap = require('../../helpers/index.js');
 const forEach = require('lodash/forEach');
+
 const map = require('lodash/map');
 const findIndex = require('lodash/findIndex');
+const merge = require('lodash/merge');
+
 const Promise = require('bluebird');
 const appConstants = require('../../helpers/appConstants.js');
+const moment = require('moment');
 
 export default (db) => (req, res) => {
   res.json({
@@ -11,8 +15,8 @@ export default (db) => (req, res) => {
   });
 
   // query DB for all keywords
-  const keywordQuery = 'SELECT keyword from keywords';
-  const companyQuery = 'SELECT name, url from companies';
+  const keywordQuery = 'SELECT id, keyword from keywords';
+  const companyQuery = 'SELECT id, name, url from companies';
   const rankQuery = 'INSERT INTO ranks'
 
   let keywords;
