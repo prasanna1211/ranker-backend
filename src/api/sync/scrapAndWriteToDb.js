@@ -46,23 +46,21 @@ export default (db) => (req, res) => {
               const rankData = map(rankMapping, (rank, index) => {
                 return merge(rank, companies[index]);
               });
-              console.log(' rank data ', rankData);
+
               const currentDate = moment().startOf('day').format('YYYY-MM-DD');
               const keywordQuery = 'KEYWORD QUERY';
+
               forEach(rankData, ({ url, rank, name, id, keywordId }) => {
-                let dbQuery = `INSERT INTO ranks
-                  (rank, logDate, companyId, keywordId, searchEngineId)
-                  VALUES
-                  (
-                    ${rank !== -1 ? rank+1 : rank},
-                    (${currentDate})
-                    (${id})
-                    ${keywordId}
-                    1
-                  );
+                let dbQuery = `INSERT INTO ranks (rank, logDate, companyId, keywordId, searchEngineId)
+                  VALUES (${rank !== -1 ? rank+1 : rank}, "${currentDate}", ${id}, ${keywordId}, 1);
                 `;
-                console.log(dbQuery);
+                console.log(' db query ', dbQuery);
+                db.query(dbQuery, (error, result) => {
+                  if (error) throw error;
+                  console.log(' written to db ');
+                });
               });
+
             }
           })
         });
