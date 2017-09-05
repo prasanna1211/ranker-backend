@@ -20,16 +20,47 @@ export default (db) => (req, res) => {
   const keywordQuery = 'select k.keyword, k.id as keywordId, d.domain, d.category, d.id as domainId from keywords k, domains d where k.domain_id = d.id';
   const companyQuery = 'SELECT id as companyId, name, url from companies';
   const rankQuery = 'INSERT INTO ranks'
+  const searchEngineQuery = 'SELECT id as searchEngineId, name as searchEngineName, value as searchEngineUrl from searchengines';
 
   let keywords;
   let companies;
+  let searchEngines;
 
-  let keywordPromise = db.query(keywordQuery, (error, result) => {
-    if (error) throw error;
-    keywords = result;
-    let companyPromise = db.query(companyQuery, (error, result) => {
-      if (error) throw error;
-      companies = result;
+  db.query(searchEngineQuery, (error, result) => {
+    searchEngines = result;
+      db.query(keywordQuery, (error, result) => {
+        if (error) throw error;
+        keywords = result;
+        db.query(companyQuery, (error, result) => {
+          if (error) throw error;
+          companies = result;
+          const companyUrl = map(companies, ({ url }) => url);
+          console.log('searchEngines', searchEngines);
+          // console.log('-------------->');
+          // console.log('keywords', keywords);
+          // console.log('-------------->');
+          // console.log('companies', companies);
+          // console.log('-------------->');
+          Promise.mapSeries(searchEngines, ({ searchEngineId, searchEngineName, searchEngineUrl }) => {
+            // recreate all domains here
+            return Promise.mapSeries(keywords, (word) => {
+              return Promise
+              .delay(appConstants.delayBetweenKeywords)
+              .then(() => {
+                console.log(word.keyword, searchEngineUrl);
+                return scrap.scrapeGoogleResult(word.keyword, searchEngineUrl, 5)
+                .then((scrap) => {
+                  if (scrap.success) {
+                    let rankMapping = companyUrl.map(url => {
+                      return {
+                        url,
+                        rank: findIndex(scrap.result, resultUrl => url === resultUrl),
+                        keywordId: word.keywordId,
+                      }
+                    });
+                    const rankData = map(rankMapping, (rank, index) => {
+                      return merge(rank, companies[index]);
+                    });
 
       const companyUrl = map(companies, ({ url }) => url);
         // recreate all domains here
