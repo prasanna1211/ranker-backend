@@ -4,6 +4,7 @@ const forEach = require('lodash/forEach');
 const map = require('lodash/map');
 const findIndex = require('lodash/findIndex');
 const merge = require('lodash/merge');
+const sortBy = require('lodash/sortBy');
 
 const Promise = require('bluebird');
 const appConstants = require('../../helpers/appConstants.js');
@@ -41,6 +42,11 @@ export default (db) => (req, res) => {
           // console.log('-------------->');
           // console.log('companies', companies);
           // console.log('-------------->');
+          const randomNumber = map(keywords, () => ({ randomNumber: parseInt(Math.random()*10000) }) );
+          keywords = merge(keywords, randomNumber);
+          keywords = sortBy(keywords, keyword => keyword.randomNumber);
+          console.log(' keywords ', keywords);
+
           Promise.mapSeries(searchEngines, ({ searchEngineId, searchEngineName, searchEngineUrl }) => {
             // recreate all domains here
             return Promise.mapSeries(keywords, (word) => {
