@@ -10,14 +10,14 @@ const getRandomSeconds = require('./getRandomSecondsBetweenRange.js');
 const appConstants = require('./appConstants.js');
 
 async function scrapeGoogleResult(keyword, domain, numberOfPages) {
-
+  console.log(' started ');
   const {
     pageWaitDurationRangeStart: start,
     pageWaitDurationRangeEnd: end,
   } = appConstants;
 
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
   });
   const page = await browser.newPage();
 
