@@ -11,14 +11,14 @@ const moment = require('moment');
 
 export default (db) => (req, res) => {
   const start = new Date().getTime();
+  console.log('started----');
   res.json({
     started: true,
   });
   let hasErrorOccured = false;
   // query DB for all keywords
-  const keywordQuery = 'SELECT id, keyword from keywords';
-  const companyQuery = 'SELECT id, name, url from companies';
-  const domainQuery = 'SELECT'
+  const keywordQuery = 'select k.keyword, k.id as keywordId, d.domain, d.category, d.id as domainId from keywords k, domains d where k.domain_id = d.id';
+  const companyQuery = 'SELECT id as companyId, name, url from companies';
   const rankQuery = 'INSERT INTO ranks'
 
   let keywords;
