@@ -10,7 +10,7 @@ const getRandomSeconds = require('./getRandomSecondsBetweenRange.js');
 const appConstants = require('./appConstants.js');
 
 async function scrapeGoogleResult(keyword, domain, numberOfPages) {
-  console.log(' started ');
+  console.log(' started ', domain, ' : ', keyword);
   const {
     pageWaitDurationRangeStart: start,
     pageWaitDurationRangeEnd: end,
