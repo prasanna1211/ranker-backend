@@ -13,6 +13,7 @@ const scrap = require('../../helpers/index.js');
 const appConstants = require('../../helpers/appConstants.js');
 
 const scrapFunction = (db, searchEngines, keywords, companies) => {
+  let hasErrorOccured = false;
   Promise.mapSeries(searchEngines, ({ searchEngineId, searchEngineName, searchEngineUrl }) => {
     // recreate all domains here
     return Promise.mapSeries(keywords, (word) => {
@@ -41,7 +42,6 @@ const scrapFunction = (db, searchEngines, keywords, companies) => {
               return merge(rank, companies[index]);
             });
             console.log('--------------->');
-            console.log('ranks', ranks);
             const currentDate = moment().startOf('day').format('YYYY-MM-DD');
             const keywordQuery = 'KEYWORD QUERY';
 
