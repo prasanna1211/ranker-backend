@@ -31,10 +31,11 @@ async function scrapeGoogleResult(keyword, domain, numberOfPages) {
   } = appConstants;
 
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
   });
   const page = await browser.newPage();
   page.setUserAgent(randomUserAgents[getRandomSeconds(0, 8)]);
+  await page.goto('https://www.google.com/ncr');
   await page.goto(domain);
 
   page.focus('input[title="Search"]');
