@@ -7,13 +7,16 @@ export default (db) => (req, res) => {
       domain,
     },
   } = req;
+  const ifCompanyExistQuery = company ? `AND cn.name = "${company}"` : '';
+  const ifDateExistQuery = startDate || endDate ? `AND logDate between '${startDate}' and '${endDate}'` : ``;
 
-  const query = `SELECT r.rank, r.companyId, r.logDate, k.keyword, d.domain
+  const query = `SELECT r.rank, cn.name, r.logDate, k.keyword, d.domain
    FROM ranks r
    INNER JOIN keywords k ON r.keywordId = k.id
    INNER JOIN domains d ON k.domain_id = d.id
+   INNER JOIN companynames cn ON cn.id = companyId ${ifCompanyExistQuery}
    WHERE domain = "${domain}"
-   AND logDate between '${startDate}' and '${endDate}'
+   ${ifDateExistQuery}
    ORDER BY logDate
    `;
 
