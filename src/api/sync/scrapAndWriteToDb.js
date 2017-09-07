@@ -6,9 +6,9 @@ const findIndex = require('lodash/findIndex');
 const merge = require('lodash/merge');
 const sortBy = require('lodash/sortBy');
 
-const Promise = require('bluebird');
 const appConstants = require('../../helpers/appConstants.js');
 const moment = require('moment');
+const scrapModule = require('./scrapFunction.js');
 
 export default (db) => (req, res) => {
   const start = new Date().getTime();
@@ -19,7 +19,7 @@ export default (db) => (req, res) => {
   let hasErrorOccured = false;
   // query DB for all keywords
   const keywordQuery = 'select k.keyword, k.id as keywordId, d.domain, d.category, d.id as domainId from keywords k, domains d where k.domain_id = d.id';
-  const companyQuery = 'SELECT id as companyId, name, url from companies';
+  const companyQuery = 'SELECT c.id as companyId, c.name, c.url, d.domain from companies c, domains d where d.id = c.domainId';
   const rankQuery = 'INSERT INTO ranks'
   const searchEngineQuery = 'SELECT id as searchEngineId, name as searchEngineName, value as searchEngineUrl from searchengines';
 
