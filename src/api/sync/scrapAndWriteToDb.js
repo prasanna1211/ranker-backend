@@ -16,7 +16,7 @@ export default (db) => (req, res) => {
   res.json({
     started: true,
   });
-  let hasErrorOccured = false;
+
   // query DB for all keywords
   const keywordQuery = 'select k.keyword, k.id as keywordId, d.domain, d.category, d.id as domainId from keywords k, domains d where k.domain_id = d.id';
   const companyQuery = 'SELECT c.id as companyId, c.name, c.url, d.domain from companies c, domains d where d.id = c.domainId';
