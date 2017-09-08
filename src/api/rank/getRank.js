@@ -7,6 +7,7 @@ export default (db) => (req, res) => {
       domain,
     },
   } = req;
+
   const ifCompanyExistQuery = company ? `AND cn.name = "${company}"` : '';
   const ifDateExistQuery = startDate || endDate ? `AND logDate between date('${startDate}') and date('${endDate}')` : ``;
 
@@ -24,7 +25,13 @@ export default (db) => (req, res) => {
   console.log(query);
 
   db.query(query, (error, result) => {
-    if (error) throw error;
-    res.json(result);
+    if (error) res.json({
+      success: false,
+      error,
+    });
+    res.json({
+      success: true,
+      result
+    });
   });
 }
