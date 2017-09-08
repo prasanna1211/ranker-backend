@@ -8,7 +8,7 @@ export default (db) => (req, res) => {
     },
   } = req;
   const ifCompanyExistQuery = company ? `AND cn.name = "${company}"` : '';
-  const ifDateExistQuery = startDate || endDate ? `AND logDate between '${startDate}' and '${endDate}'` : ``;
+  const ifDateExistQuery = startDate || endDate ? `AND logDate between date('${startDate}') and date('${endDate}')` : ``;
 
   const query = `SELECT r.rank, cn.name, r.logDate, k.keyword, d.domain
    FROM ranks r
