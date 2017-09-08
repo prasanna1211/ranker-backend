@@ -18,6 +18,37 @@ export default (db) => (req, res) => {
     },
   } = req;
 
+  let errorObject = {
+    error: false,
+    errorMessage: '',
+  };
+
+  if (!domain) {
+    errorObject = setError(errorObject, 'Domain not present');
+    return res.json(errorObject);
+  }
+  if (!validator.isByteLength(domain, {
+    min: 1,
+    max: undefined
+  })) {
+    errorObject = setError(errorObject, 'Domain length is 0');
+    return res.json(errorObject);
+  }
+  const dateRegEx = /^\d{4}-\d{2}-\d{2}$/;
+  if (startDate) {
+    if (isNull(startDate.match(dateRegEx))) {
+      errorObject = setError(errorObject, 'Start Date not in YYYY-MM-DD format');
+      return res.json(errorObject);
+    }
+  }
+
+  if (endDate) {
+    if (isNull(endDate.match(dateRegEx))) {
+      errorObject = setError(errorObject, 'End Date not in YYYY-MM-DD format');
+      return res.json(errorObject);
+    }
+  }
+
   const ifCompanyExistQuery = company ? `AND cn.name = "${company}"` : '';
   const ifDateExistQuery = startDate || endDate ? `AND logDate between date('${startDate}') and date('${endDate}')` : ``;
 
@@ -35,10 +66,12 @@ export default (db) => (req, res) => {
   console.log(query);
 
   db.query(query, (error, result) => {
-    if (error) res.json({
-      success: false,
-      error,
-    });
+    if (error) {
+      return res.json({
+        success: false,
+        error,
+      });
+    }
     res.json({
       success: true,
       result
