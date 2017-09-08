@@ -18,19 +18,23 @@ const scrapFunction = (db, searchEngines, keywords, companies) => {
     // recreate all domains here
     return Promise.mapSeries(keywords, (word) => {
       const companyUrl = reduce(companies, (accumulator, company) => {
-        console.log(company);
         if (company.domain === word.domain) {
           accumulator.push(company.url);
         }
         return accumulator;
       }, []);
+      console.log(' keyword ', word.keyword);
+      console.log(' company url ', companyUrl);
+      console.log('---------------------------------------------------------------->')
       return Promise
       .delay(appConstants.delayBetweenKeywords)
       .then(() => {
 
-        return scrap.scrapeGoogleResult(word.keyword, searchEngineUrl, 5)
+        return scrap.scrapeGoogleResult(word.keyword, searchEngineUrl, 1)
         .then((scrap) => {
           if (scrap.success) {
+            console.log('scrap result', scrap.result);
+            console.log('company url', companyUrl);
             let rankMapping = companyUrl.map(url => {
               return {
                 url,
@@ -38,10 +42,10 @@ const scrapFunction = (db, searchEngines, keywords, companies) => {
                 keywordId: word.keywordId,
               }
             });
+            console.log('rankmapping ', rankMapping);
             const rankData = map(rankMapping, (rank, index) => {
               return merge(rank, companies[index]);
             });
-            console.log('--------------->');
             const currentDate = moment().startOf('day').format('YYYY-MM-DD');
             const keywordQuery = 'KEYWORD QUERY';
 
@@ -71,7 +75,7 @@ const scrapFunction = (db, searchEngines, keywords, companies) => {
       db.query(dbQuery, (error, result) => {
         if (error) throw error;
         const end = new Date().getTime();
-        console.log('finished ', (end - start) / 1000);
+        console.log(' finished scraping ');
       });
     });
   });
