@@ -52,7 +52,7 @@ export default (db) => (req, res) => {
 
   const ifCompanyExistQuery = company ? `AND cn.name = "${company}"` : '';
   const ifDateExistQuery = startDate || endDate ? `AND logDate between date('${startDate}') and date('${endDate}')` : ``;
-  const searchEngineQuery = searchEngine ? `INNER JOIN searchengines se ON se.value = "${searchEngine} AND se.id = r.searchEngineId"` : 'RIGHT JOIN searchengines se ON se.id = r.searchEngineId';
+  const searchEngineQuery = searchEngine ? `INNER JOIN searchengines se ON se.value = "${searchEngine}" AND se.id = r.searchEngineId` : 'RIGHT JOIN searchengines se ON se.id = r.searchEngineId';
 
   const query = `SELECT r.rank, cn.name, r.logDate, k.keyword, se.value as searchEngine
    FROM ranks r

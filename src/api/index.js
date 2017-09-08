@@ -5,6 +5,7 @@ import companyRoutes from './companies/index.js';
 import keywordRoutes from './keywords/index.js';
 import syncRoutes from './sync/index.js';
 import domainRoutes from './domains/index.js';
+import searchEngineRoutes from './searchEngines/index.js';
 
 export default ({ config, db }) => {
 	let api = Router();
@@ -14,6 +15,9 @@ export default ({ config, db }) => {
 
 	// companies route
 	api.route('/domains').get(domainRoutes.getDomains(db));
+
+	// searc engines route
+	api.route('/searchengines').get(searchEngineRoutes.getSearchEngines(db));
 
 	// companies route
 	api.route('/companies').get(companyRoutes.getAllCompanies(db));
