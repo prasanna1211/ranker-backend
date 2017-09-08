@@ -39,7 +39,8 @@
     "morgan": "^1.8.0",
     "mysql": "^2.14.1",
     "puppeteer": "^0.10.1",
-    "resource-router-middleware": "^0.6.0"
+    "resource-router-middleware": "^0.6.0",
+    "validator": "^8.1.0"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
