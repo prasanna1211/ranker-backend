@@ -1,3 +1,13 @@
+const validator = require('validator');
+const isNull = require('lodash/isNull');
+
+const setError = (errorObject, errorMessage) => {
+  let result = {};
+  result.error = true;
+  result.errorMessage = errorMessage;
+  return result;
+};
+
 export default (db) => (req, res) => {
   const {
     query: {
