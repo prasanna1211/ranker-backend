@@ -52,11 +52,12 @@ export default (db) => (req, res) => {
   const ifCompanyExistQuery = company ? `AND cn.name = "${company}"` : '';
   const ifDateExistQuery = startDate || endDate ? `AND logDate between date('${startDate}') and date('${endDate}')` : ``;
 
-  const query = `SELECT r.rank, cn.name, r.logDate, k.keyword, d.domain
+  const query = `SELECT r.rank, cn.name, r.logDate, k.keyword, se.value as searchEngine
    FROM ranks r
    INNER JOIN keywords k ON r.keywordId = k.id
    INNER JOIN domains d ON k.domain_id = d.id
    INNER JOIN companynames cn ON cn.id = companyId ${ifCompanyExistQuery}
+   RIGHT JOIN searchengines se ON se.id = r.searchEngineId
    WHERE domain = "${domain}"
    ${ifDateExistQuery}
    ORDER BY logDate
@@ -74,6 +75,7 @@ export default (db) => (req, res) => {
     }
     res.json({
       success: true,
+      domain,
       result
     });
   });
