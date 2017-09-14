@@ -32,13 +32,12 @@ export default (db) => (req, res) => {
       db.query(keywordQuery, (error, result) => {
         if (error) throw error;
         keywords = result;
-        db.query(companyQuery, (error, result) => {
+        db.query(urlQuery, (error, result) => {
           if (error) throw error;
-          companies = result;
-          const randomNumber = map(keywords, () => ({ randomNumber: parseInt(Math.random()*10000) }) );
-          keywords = merge(keywords, randomNumber);
-          keywords = sortBy(keywords, keyword => keyword.randomNumber);
-          scrapModule.scrapFunction(db, searchEngines, keywords, companies);
+          urls = result;
+
+          scrapModule.scrapFunction(db, searchEngines, keywords, urls);
+
           });
       });
     });

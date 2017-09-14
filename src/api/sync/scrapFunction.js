@@ -1,84 +1,48 @@
-const Promise = require('bluebird');
+// const Promise = require('bluebird');
 
 const forEach = require('lodash/forEach');
 
 const moment = require('moment');
 const map = require('lodash/map');
+const lodash = require('lodash');
+const random = require('lodash/random');
 const findIndex = require('lodash/findIndex');
 const merge = require('lodash/merge');
 const sortBy = require('lodash/sortBy');
 const reduce = require('lodash/reduce');
+const filter = require('lodash/filter');
 
+let cron = require('node-cron');
 const scrap = require('../../helpers/index.js');
 const appConstants = require('../../helpers/appConstants.js');
+const checkIfCountIsLimited = require('../../helpers/checkIfCountIsLimited.js');
 
-const scrapFunction = (db, searchEngines, keywords, companies) => {
-  let hasErrorOccured = false;
-  Promise.mapSeries(searchEngines, ({ searchEngineId, searchEngineName, searchEngineUrl }) => {
-    // recreate all domains here
-    return Promise.mapSeries(keywords, (word) => {
-      const companyUrl = reduce(companies, (accumulator, company) => {
-        if (company.domain === word.domain) {
-          accumulator.push(company.url);
-        }
-        return accumulator;
-      }, []);
-      console.log(' keyword ', word.keyword);
-      console.log(' company url ', companyUrl);
-      console.log('---------------------------------------------------------------->')
-      return Promise
-      .delay(appConstants.delayBetweenKeywords)
-      .then(() => {
+console.log(checkIfCountIsLimited);
 
-        return scrap.scrapeGoogleResult(word.keyword, searchEngineUrl, 1)
-        .then((scrap) => {
-          if (scrap.success) {
-            console.log('scrap result', scrap.result);
-            console.log('company url', companyUrl);
-            let rankMapping = companyUrl.map(url => {
-              return {
-                url,
-                rank: findIndex(scrap.result, resultUrl => url === resultUrl),
-                keywordId: word.keywordId,
-              }
-            });
-            console.log('rankmapping ', rankMapping);
-            const rankData = map(rankMapping, (rank, index) => {
-              return merge(rank, companies[index]);
-            });
-            const currentDate = moment().startOf('day').format('YYYY-MM-DD');
-            const keywordQuery = 'KEYWORD QUERY';
-
-            forEach(rankData, ({ url, rank, name, companyId, keywordId }) => {
-              let dbQuery = `INSERT INTO ranks (rank, logDate, companyId, keywordId, searchEngineId)
-                VALUES (${rank !== -1 ? rank+1 : rank}, "${currentDate}", ${companyId}, ${keywordId}, ${searchEngineId});
-              `;
-              console.log(dbQuery);
-              db.query(dbQuery, (error, result) => {
-                if (error) throw error;
-              });
-            });
-          } else if (scrap.error) {
-            hasErrorOccured = true;
-            let dbQuery = `INSERT INTO errors (error) VALUE ${error.errorMessage}`
-            db.query(dbQuery, (error, result) => {
-              if (error) throw error;
-              console.log(error);
-            });
-          }
-        });
-
-      });
-    }).then(() => {
-      const status = hasErrorOccured ? 'ERROR occured' : 'No Error Occured';
-      let dbQuery = `INSERT INTO statuses (status) VALUE ("${status}")`;
-      db.query(dbQuery, (error, result) => {
-        if (error) throw error;
-        const end = new Date().getTime();
-        console.log(' finished scraping ');
-      });
-    });
+const scrapFunction = (db, searchEngines, keywords, urls) => {
+  let batchedKeywords;
+  let status = true;
+  while (status) {
+    batchedKeywords = lodash.chain(keywords)
+      .map((keyword) => ({
+        ...keyword,
+        batchId: Math.floor(random(1, 24)),
+      }))
+      .sortBy('batchId')
+    const batches = batchedKeywords
+      .map(x => x.batchId)
+      .value();
+    status &= !checkIfCountIsLimited.check(batches, 6);
+  }
+  const batchedKeywordGroup = batchedKeywords.value();
+  console.log('starting');
+  cron.schedule('1 55 * * * *', () => {
+    console.log('came in ');
   });
+  for(var hour = 1; hour <= 24; hour++) {
+    const currentBatch = filter(batchedKeywordGroup, group => group.batchId === hour);
+    // console.log('batch ', hour, currentBatch, `${hour} * * *`);
+  }
 }
 
 module.exports = {
