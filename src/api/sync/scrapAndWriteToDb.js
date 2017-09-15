@@ -1,4 +1,3 @@
-const scrap = require('../../helpers/index.js');
 const forEach = require('lodash/forEach');
 
 const map = require('lodash/map');
