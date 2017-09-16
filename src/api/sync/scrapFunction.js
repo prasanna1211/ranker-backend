@@ -13,30 +13,25 @@ const reduce = require('lodash/reduce');
 const filter = require('lodash/filter');
 const isEqual = require('lodash/isEqual');
 const shuffle = require('lodash/shuffle');
+const cron = require('node-cron');
 
-let cron = require('node-cron');
 const appConstants = require('../../helpers/appConstants.js');
 const checkIfCountIsLimited = require('../../helpers/checkIfCountIsLimited.js');
 const scrapABatch = require('./scrapABatch.js');
 
-const getRankData = (eachBatch) => {
-  console.log(eachBatch);
-}
-
-const scrapFunction = (db, searchEngines, keywords, urls) => {
+const scrapFunction = (db, taskList, searchEngines, keywords, urls) => {
   let batchedKeywords = lodash.chain(keywords)
     .shuffle()
     .chunk(5)
     .value();
-  const taskList = new Array(20);
   let currentHour = 1;
   for(var hour = 1; hour <= 20; hour++) {
-
-    console.log(`1 22 ${hour-1} * * *`);
-    taskList[hour-1] = cron.schedule(`1 22 ${hour-1} * * *`, () => {
+    const cronString = `0 13 ${hour-1} * * *`;
+    console.log('scheduling items for day ', cronString);
+    taskList[hour-1][0] = cron.schedule(cronString, () => {
       const currentBatch = batchedKeywords[currentHour-1];
-      console.log('current batch ', currentBatch, currentHour);
-      scrapABatch.scrap(db, currentBatch, currentHour);
+      console.log('starting in scrap', currentBatch);
+      scrapABatch.scrap(db, taskList, currentBatch, currentHour, urls);
       currentHour += 1;
     });
   }

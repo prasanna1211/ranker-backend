@@ -9,16 +9,12 @@ const appConstants = require('../../helpers/appConstants.js');
 const moment = require('moment');
 const scrapModule = require('./scrapFunction.js');
 
-export default (db) => (req, res) => {
+export default (db, taskList) => {
   const start = new Date().getTime();
-
-  res.json({
-    started: true,
-  });
 
   // query DB for all keywords
   const keywordQuery = 'select k.keyword, k.id as keywordId, k.isImportant as isImportant, d.domain, d.id as domainId from keywords k, domains d where k.domainId = d.id';
-  const urlQuery = 'SELECT u.id as urlId, u.url, cn.name, d.domain from urls u, domains d, companynames cn where d.id = u.domainId AND u.companynameId = cn.id';
+  const urlQuery = 'SELECT u.id as urlId, u.url, cn.name, cn.id as companyId, d.domain from urls u, domains d, companynames cn where d.id = u.domainId AND u.companynameId = cn.id';
   const rankQuery = 'INSERT INTO ranks'
   const searchEngineQuery = 'SELECT id as searchEngineId, name as searchEngineName, value as searchEngineUrl from searchengines';
 
@@ -35,7 +31,7 @@ export default (db) => (req, res) => {
           if (error) throw error;
           urls = result;
 
-          scrapModule.scrapFunction(db, searchEngines, keywords, urls);
+          scrapModule.scrapFunction(db, taskList, searchEngines, keywords, urls);
 
           });
       });
