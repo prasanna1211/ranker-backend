@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/api/companies/index.js"],"names":["module","exports","getAllCompanies"],"mappings":";;AAAA;;;;;;AAEAA,OAAOC,OAAP,GAAiB;AACfC;AADe,CAAjB","file":"index.js","sourcesContent":["import getAllCompanies from './getAllCompanies.js';\n\nmodule.exports = {\n  getAllCompanies,\n}\n"]}

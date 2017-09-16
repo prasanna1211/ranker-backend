@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../../src/api/domains/index.js"],"names":["module","exports","getDomains"],"mappings":";;AAAA;;;;;;AAEAA,OAAOC,OAAP,GAAiB;AACfC;AADe,CAAjB","file":"index.js","sourcesContent":["import getDomains from './getDomains.js';\n\nmodule.exports = {\n  getDomains,\n};\n"]}
