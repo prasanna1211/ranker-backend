@@ -56,6 +56,6 @@ const taskList = map(taskHeader, task => new Array(20));
 // 	app.server.listen(process.env.PORT || config.port, () => {
 // 		console.log(`Started on port ${app.server.address().port}`);
 // 	});
-});
+// });
 
 export default app;
