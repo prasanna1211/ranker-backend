@@ -3,11 +3,11 @@ import { Router } from 'express';
 import rankRoutes from './rank/index.js';
 import companyRoutes from './companies/index.js';
 import keywordRoutes from './keywords/index.js';
-import syncRoutes from './sync/index.js';
 import domainRoutes from './domains/index.js';
 import searchEngineRoutes from './searchEngines/index.js';
+import cancelRoutes from './cancelRoutes/index.js';
 
-export default ({ config, db }) => {
+export default ({ config, db, taskList }) => {
 	let api = Router();
 
 	// rank related routes
@@ -25,8 +25,8 @@ export default ({ config, db }) => {
 	// keywords route
 	api.route('/keywords').get(keywordRoutes.getAllKeywords(db));
 
-	// scrap and sync to route
-	api.route('/sync').get(syncRoutes.scrapAndWriteToDb(db));
+	// cancel all taskList
+	api.route('/cancel').get(cancelRoutes.cancelAllTasks(taskList));
 
 	return api;
 }
