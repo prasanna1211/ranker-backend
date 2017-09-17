@@ -26,11 +26,11 @@ const scrapFunction = (db, taskList, searchEngines, keywords, urls) => {
     .value();
   let currentHour = 1;
   for(var hour = 1; hour <= 20; hour++) {
-    const cronString = `0 13 ${hour-1} * * *`;
+    const cronString = `0 1 ${hour-1} * * *`;
     console.log('scheduling items for day ', cronString);
     taskList[hour-1][0] = cron.schedule(cronString, () => {
       const currentBatch = batchedKeywords[currentHour-1];
-      console.log('starting in scrap', currentBatch);
+      // console.log('starting in scrap', currentBatch);
       scrapABatch.scrap(db, taskList, currentBatch, currentHour, urls);
       currentHour += 1;
     });
