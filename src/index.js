@@ -9,6 +9,7 @@ import api from './api';
 import config from './config.json';
 import cron from 'node-cron';
 import map from 'lodash/map';
+import isEmpty from 'lodash/isEmpty';
 import syncModule from './api/sync/index.js';
 
 let app = express();
