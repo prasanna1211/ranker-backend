@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../src/api/sync/index.js"],"names":["module","exports","scrapAndWriteToDb"],"mappings":";;AAAA;;;;;;AAEAA,OAAOC,OAAP,GAAiB;AACfC;AADe,CAAjB","file":"index.js","sourcesContent":["import scrapAndWriteToDb from './scrapAndWriteToDb.js';\n\nmodule.exports = {\n  scrapAndWriteToDb,\n};\n"]}

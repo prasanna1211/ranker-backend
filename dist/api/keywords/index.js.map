@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../src/api/keywords/index.js"],"names":["module","exports","getAllKeywords"],"mappings":";;AAAA;;;;;;AAEAA,OAAOC,OAAP,GAAiB;AACfC;AADe,CAAjB","file":"index.js","sourcesContent":["import getAllKeywords from './getAllKeywords.js';\n\nmodule.exports = {\n  getAllKeywords,\n};\n"]}

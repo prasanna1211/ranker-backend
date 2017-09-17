@@ -30,32 +30,32 @@ const taskHeader = new Array(30);
 
 const taskList = map(taskHeader, task => new Array(20));
 
-// // connect to db
-// initializeDb( db => {
-//
-// 	// internal middleware
-// 	app.use(middleware({ config, db }));
-//
-// 	// api router
-// 	app.use('/api', api({ config, db, taskList }));
-// 	const cronStringStarting = '0 12 11 * * *';
-// 	const cronStringEnding = '0 0 23 * * *';
-//
-// 	cron.schedule(cronStringStarting, () => {
-// 		syncModule.scrapAndWriteToDb(db, taskList);
-// 	});
-// 	cron.schedule(cronStringEnding, () => {
-//     for (var i = 0; i < taskList.length; i++) {
-//       for (var j = 0; j < taskList[i].length; j++) {
-//         if (!isEmpty(taskList[i][j])) {
-//           taskList[i][j].destroy();
-//         }
-//       }
-//     }
-// 	});
-// 	app.server.listen(process.env.PORT || config.port, () => {
-// 		console.log(`Started on port ${app.server.address().port}`);
-// 	});
+// connect to db
+initializeDb( db => {
+
+	// internal middleware
+	app.use(middleware({ config, db }));
+
+	// api router
+	app.use('/api', api({ config, db, taskList }));
+	const cronStringStarting = '0 0 17 * * *';
+	const cronStringEnding = '0 0 5 * * *';
+
+	cron.schedule(cronStringStarting, () => {
+		syncModule.scrapAndWriteToDb(db, taskList);
+	});
+	cron.schedule(cronStringEnding, () => {
+    for (var i = 0; i < taskList.length; i++) {
+      for (var j = 0; j < taskList[i].length; j++) {
+        if (!isEmpty(taskList[i][j])) {
+          taskList[i][j].destroy();
+        }
+      }
+    }
+	});
+	app.server.listen(process.env.PORT || config.port, () => {
+		console.log(`Started on port ${app.server.address().port}`);
+	});
 });
 
 export default app;
