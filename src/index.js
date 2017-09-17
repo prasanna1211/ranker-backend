@@ -38,8 +38,8 @@ initializeDb( db => {
 
 	// api router
 	app.use('/api', api({ config, db, taskList }));
-	const cronStringStarting = '0 0 17 * * *';
-	const cronStringEnding = '0 0 5 * * *';
+	const cronStringStarting = '0 0 14 * * *';
+	const cronStringEnding = '0 0 22 * * *';
 
 	cron.schedule(cronStringStarting, () => {
 		syncModule.scrapAndWriteToDb(db, taskList);
