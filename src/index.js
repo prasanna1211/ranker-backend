@@ -38,7 +38,7 @@ initializeDb( db => {
 
 	// api router
 	app.use('/api', api({ config, db, taskList }));
-	const cronStringStarting = '0 0 8 * * *';
+	const cronStringStarting = '0 0 17 * * *';
 	const cronStringEnding = '0 0 5 * * *';
 
 	cron.schedule(cronStringStarting, () => {

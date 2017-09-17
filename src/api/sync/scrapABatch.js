@@ -23,7 +23,7 @@ const scrapABatch = (db, taskList, batch, currentBatchNumber, urls) => {
 
     const { keyword, keywordId, isImportant, domain, domainId } = batch[k];
     const keywordScrapStartTime = `${2 + (k * 10) + parseInt(random(0, 2))}`;
-    const cronString = `0 ${keywordScrapStartTime} ${8 + currentBatchNumber - 1} * * *`;
+    const cronString = `0 ${keywordScrapStartTime} ${17 + currentBatchNumber - 1} * * *`;
     console.log('scheduled for this hour ', cronString, keyword, domain);
     // const cronString = `10 ${(0+(k*8))%60} 16 * * *`;
     taskList[currentBatchNumber][k] = cron.schedule(cronString, () => {
