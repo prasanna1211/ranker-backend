@@ -57,7 +57,7 @@ export default (db) => (req, res) => {
   const query = `SELECT r.rank, cn.name, r.logDate, k.keyword, se.value as searchEngine
    FROM ranks r
    INNER JOIN keywords k ON r.keywordId = k.id
-   INNER JOIN domains d ON k.domain_id = d.id
+   INNER JOIN domains d ON k.domainId = d.id
    INNER JOIN companynames cn ON cn.id = companyId ${ifCompanyExistQuery}
    ${searchEngineQuery}
    WHERE domain = "${domain}"
